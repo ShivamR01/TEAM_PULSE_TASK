@@ -9,6 +9,10 @@ Team Pulse is a collaborative project management tool designed to help teams tra
 - Real-time collaboration
 - Progress tracking and analytics
 
+## Live Demo
+
+Check out the live application here: [Team Pulse Live](https://team-pulse-task.vercel.app/)
+
 ## About Redux and Redux Toolkit
 
 **Redux** is a predictable state container for JavaScript apps, commonly used with React to manage application state in a centralized store. It helps you write applications that behave consistently, run in different environments, and are easy to test.
