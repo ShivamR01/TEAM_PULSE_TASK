@@ -19,7 +19,7 @@ export default function PerformanceChart({ members }: PerformanceChartProps) {
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis />
           <YAxis />
           <Tooltip />
           <Legend verticalAlign="bottom" height={36} />
