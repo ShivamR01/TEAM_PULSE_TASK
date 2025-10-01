@@ -1,7 +1,8 @@
 import { useDispatch } from 'react-redux';
-import { updateTaskProgress, updateTaskStatus } from '../redux/membersSlice';
-import { Calendar, CheckCircle2, Circle, Minus, Plus, Clock, Tag } from 'lucide-react';
-import type { Task } from '../redux/membersSlice';
+import { updateTaskProgress, updateTaskStatus } from '../redux/slices/membersSlice';
+import { Calendar, CheckCircle2, Minus, Plus, Clock, Tag } from 'lucide-react';
+import { motion } from 'framer-motion';
+import type { Task } from '../redux/slices/membersSlice';
 
 interface TaskListProps {
   tasks: Task[];
@@ -38,11 +39,11 @@ export default function TaskList({ tasks, userId }: TaskListProps) {
   const getStatusColor = (status: 'pending' | 'in-progress' | 'completed') => {
     switch (status) {
       case 'pending':
-        return 'bg-gray-100 text-gray-700 border-gray-300';
+        return 'bg-gray-200 text-gray-800';
       case 'in-progress':
-        return 'bg-blue-100 text-blue-700 border-blue-300';
+        return 'bg-blue-200 text-blue-800';
       case 'completed':
-        return 'bg-green-100 text-green-700 border-green-300';
+        return 'bg-green-200 text-green-800';
     }
   };
 
@@ -53,118 +54,126 @@ export default function TaskList({ tasks, userId }: TaskListProps) {
 
   if (tasks.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-        <Circle className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-        <p className="text-gray-500">No tasks assigned yet</p>
+      <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-10 text-center">
+        <CheckCircle2 className="w-16 h-16 text-gray-300 mx-auto mb-4 animate-pulse" />
+        <p className="text-gray-500 text-lg">No tasks assigned yet</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">Your Tasks</h2>
-      <div className="space-y-4">
-        {tasks.map((task) => (
-          <div
-            key={task.id}
-            className={`border rounded-lg p-4 transition-all ${
-              task.completed
-                ? 'bg-green-50 border-green-200'
-                : isOverdue(task.dueDate, task.completed)
-                ? 'bg-red-50 border-red-200'
-                : 'bg-white border-gray-200 hover:border-gray-300'
-            }`}
-          >
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex items-start space-x-3 flex-1">
-                {task.completed ? (
-                  <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                ) : (
-                  <Circle className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
-                )}
-                <div className="flex-1">
-                  <h3
-                    className={`font-medium ${
-                      task.completed ? 'text-gray-500 line-through' : 'text-gray-900'
-                    }`}
-                  >
-                    {task.title}
-                  </h3>
-                  <div className="flex flex-wrap items-center gap-3 mt-2">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      <span
-                        className={
-                          isOverdue(task.dueDate, task.completed) ? 'text-red-600 font-medium' : ''
-                        }
-                      >
-                        Due: {formatDate(task.dueDate)}
-                      </span>
-                    </div>
-                    <div className={`flex items-center text-xs px-2 py-1 rounded border ${getStatusColor(task.taskStatus)}`}>
-                      <Tag className="w-3 h-3 mr-1" />
-                      <span className="font-medium capitalize">{task.taskStatus}</span>
-                    </div>
-                  </div>
-                  {task.completedAt && (
-                    <div className="flex items-center text-xs text-green-600 mt-1">
-                      <Clock className="w-3 h-3 mr-1" />
-                      <span>Completed: {formatDateTime(task.completedAt)}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="flex-shrink-0">
-                <select
-                  value={task.taskStatus}
-                  onChange={(e) => handleStatusChange(task.id, e.target.value as 'pending' | 'in-progress' | 'completed')}
-                  className={`text-xs px-2 py-1 rounded border font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 ${getStatusColor(task.taskStatus)}`}
-                >
-                  <option value="pending">Pending</option>
-                  <option value="in-progress">In Progress</option>
-                  <option value="completed">Completed</option>
-                </select>
-              </div>
-            </div>
+    <div className="space-y-6">
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">Your Tasks</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tasks.map((task, index) => {
+          const progressColor =
+            task.taskStatus === 'completed'
+              ? 'from-green-400 to-green-600'
+              : task.taskStatus === 'in-progress'
+              ? 'from-blue-400 to-blue-600'
+              : 'from-gray-300 to-gray-400';
 
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600">Progress</span>
-                <span className="font-semibold text-gray-900">{task.progress}%</span>
-              </div>
+          return (
+           <motion.div
+  key={task.id}
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.4, delay: index * 0.1 }}
+  className={`relative rounded-2xl p-5 shadow-sm hover:shadow-md transition-transform hover:scale-[1.02] overflow-hidden
+    ${
+      task.completed
+        ? 'bg-green-50 border border-green-200'
+        : isOverdue(task.dueDate, task.completed)
+        ? 'bg-red-50 border border-red-200'
+        : 'bg-white border border-gray-200'
+    }
+  `}
+>
+  {/* Top Info */}
+  <div className="flex justify-between items-start mb-3">
+    <div className="flex-1">
+      <h3 className={`font-semibold text-lg ${task.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
+        {task.title}
+      </h3>
+      <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-gray-600">
+        <div className={`flex items-center gap-1`}>
+          <Calendar className="w-4 h-4" />
+          <span className={isOverdue(task.dueDate, task.completed) ? 'text-red-600 font-medium' : ''}>
+            {formatDate(task.dueDate)}
+          </span>
+        </div>
+        <div className={`px-2 py-0.5 rounded-full border text-xs ${getStatusColor(task.taskStatus)} flex items-center gap-1`}>
+          <Tag className="w-3 h-3" />
+          <span className="capitalize">{task.taskStatus.replace('-', ' ')}</span>
+        </div>
+      </div>
+      {task.completedAt && (
+        <div className="flex items-center text-xs text-green-600 mt-1 gap-1">
+          <Clock className="w-3 h-3" />
+          <span>{formatDateTime(task.completedAt)}</span>
+        </div>
+      )}
+    </div>
 
-              <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                <div
-                  className={`h-full transition-all duration-300 ${
-                    task.completed ? 'bg-green-600' : 'bg-blue-600'
-                  }`}
-                  style={{ width: `${task.progress}%` }}
-                />
-              </div>
+    {/* Status Selector */}
+    <div className="flex-shrink-0">
+      <select
+        value={task.taskStatus}
+        onChange={(e) => handleStatusChange(task.id, e.target.value as 'pending' | 'in-progress' | 'completed')}
+        className={`text-xs px-3 py-1 rounded-lg border font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 ${getStatusColor(task.taskStatus)}`}
+      >
+        <option value="pending">Pending</option>
+        <option value="in-progress">In Progress</option>
+        <option value="completed">Completed</option>
+      </select>
+    </div>
+  </div>
 
-              {!task.completed && (
-                <div className="flex items-center justify-center space-x-2 mt-3">
-                  <button
-                    onClick={() => handleProgressChange(task.id, -10)}
-                    disabled={task.progress === 0}
-                    className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-1"
-                  >
-                    <Minus className="w-4 h-4" />
-                    <span className="text-sm font-medium">10%</span>
-                  </button>
-                  <button
-                    onClick={() => handleProgressChange(task.id, 10)}
-                    disabled={task.progress === 100}
-                    className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-1"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span className="text-sm font-medium">10%</span>
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
+  {/* Progress Bar */}
+  <div className="mt-3">
+    <div className="flex justify-between text-sm mb-1">
+      <span className="text-gray-600">Progress</span>
+      <span className="font-semibold text-gray-900">{task.progress}%</span>
+    </div>
+    <div className="w-full h-2 rounded-full bg-gray-200 overflow-hidden">
+      <motion.div
+        initial={{ width: 0 }}
+        animate={{ width: `${task.progress}%` }}
+        transition={{ duration: 0.5 }}
+        className={`h-full rounded-full ${
+          task.taskStatus === 'completed'
+            ? 'bg-green-500'
+            : task.taskStatus === 'in-progress'
+            ? 'bg-blue-500'
+            : 'bg-gray-400'
+        }`}
+      />
+    </div>
+  </div>
+
+  {/* Increment / Decrement Buttons */}
+  {!task.completed && (
+    <div className="flex justify-end items-center space-x-2 mt-4">
+      <button
+        onClick={() => handleProgressChange(task.id, -10)}
+        disabled={task.progress === 0}
+        className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition"
+      >
+        <Minus className="w-4 h-4 inline-block" />
+      </button>
+      <button
+        onClick={() => handleProgressChange(task.id, 10)}
+        disabled={task.progress === 100}
+        className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+      >
+        <Plus className="w-4 h-4 inline-block" />
+      </button>
+    </div>
+  )}
+</motion.div>
+
+          );
+        })}
       </div>
     </div>
   );

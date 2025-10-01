@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import TeamLeadView from './TeamLeadView';
-import TeamMemberView from './TeamMemberView';
+import TeamLeadView from '../components/TeamLeadView';
+import TeamMemberView from '../components/TeamMemberView';
 
 export default function Dashboard() {
   const { currentRole } = useSelector((state: RootState) => state.role);

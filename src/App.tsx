@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import Header from './components/Header';
-import Dashboard from './components/Dashboard';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (

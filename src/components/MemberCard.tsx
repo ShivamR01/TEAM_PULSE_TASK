@@ -1,5 +1,5 @@
 import { User, CheckCircle2, Clock, Eye } from 'lucide-react';
-import type { Member } from '../redux/membersSlice';
+import type { Member } from '../redux/slices/membersSlice';
 
 interface MemberCardProps {
   member: Member;
@@ -11,54 +11,63 @@ export default function MemberCard({ member, onViewDashboard }: MemberCardProps)
   const completedTasks = member.tasks.filter(t => t.completed).length;
 
   const statusColors = {
-    Working: 'bg-green-100 text-green-800 border-green-200',
-    Break: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-    Meeting: 'bg-blue-100 text-blue-800 border-blue-200',
-    Offline: 'bg-gray-100 text-gray-800 border-gray-200'
+    Working: 'from-green-400 to-green-600',
+    Break: 'from-yellow-400 to-yellow-500',
+    Meeting: 'from-blue-400 to-blue-600',
+    Offline: 'from-gray-400 to-gray-500'
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-all group">
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center space-x-3">
-          <div className="bg-blue-100 p-2 rounded-full">
-            <User className="w-5 h-5 text-blue-600" />
+    <div className="group w-full max-w-sm mx-auto">
+      {/* Card Main */}
+      <div className="relative bg-white/20 backdrop-blur-xl rounded-3xl border border-white/30 shadow-2xl transform transition-all hover:scale-[1.05] hover:shadow-3xl overflow-hidden">
+
+        <div className="p-6 flex flex-col space-y-6">
+          {/* Member Info */}
+          <div className="flex items-center space-x-4">
+            <div className="bg-white/50 p-4 rounded-full flex items-center justify-center shadow-lg">
+              <User className="w-6 h-6 text-gray-900" />
+            </div>
+            <div className="flex flex-col">
+              <h3 className="font-bold text-gray-900 text-xl">{member.name}</h3>
+              <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r ${statusColors[member.status]} text-white shadow-md mt-1`}>
+                {member.status}
+              </span>
+            </div>
           </div>
-          <div>
-            <h3 className="font-semibold text-gray-900">{member.name}</h3>
-            <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full border ${statusColors[member.status]} mt-1`}>
-              {member.status}
-            </span>
+
+          {/* Task Stats */}
+          <div className="grid grid-cols-2 gap-5">
+            <div className="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-green-300 to-green-500 rounded-2xl shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1">
+              <div className="flex items-center space-x-2 text-white font-medium">
+                <Clock className="w-5 h-5" />
+                <span>Active</span>
+              </div>
+              <span className="mt-2 text-xl font-bold text-white">{activeTasks}</span>
+            </div>
+            <div className="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-blue-300 to-blue-500 rounded-2xl shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1">
+              <div className="flex items-center space-x-2 text-white font-medium">
+                <CheckCircle2 className="w-5 h-5" />
+                <span>Completed</span>
+              </div>
+              <span className="mt-2 text-xl font-bold text-white">{completedTasks}</span>
+            </div>
           </div>
+
+          {/* View Dashboard Button (hover only) */}
+          {onViewDashboard && (
+            <button
+              onClick={() => onViewDashboard(member.id)}
+              className="w-full mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-2xl hover:bg-blue-700 transition-all shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+            >
+              <div className="flex items-center justify-center space-x-2">
+                <Eye className="w-4 h-4" />
+                <span>View Dashboard</span>
+              </div>
+            </button>
+          )}
         </div>
       </div>
-
-      <div className="space-y-2">
-        <div className="flex items-center justify-between text-sm">
-          <span className="flex items-center text-gray-600">
-            <Clock className="w-4 h-4 mr-1" />
-            Active Tasks
-          </span>
-          <span className="font-semibold text-gray-900">{activeTasks}</span>
-        </div>
-        <div className="flex items-center justify-between text-sm">
-          <span className="flex items-center text-gray-600">
-            <CheckCircle2 className="w-4 h-4 mr-1" />
-            Completed
-          </span>
-          <span className="font-semibold text-gray-900">{completedTasks}</span>
-        </div>
-      </div>
-
-      {onViewDashboard && (
-        <button
-          onClick={() => onViewDashboard(member.id)}
-          className="w-full mt-3 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 opacity-0 group-hover:opacity-100"
-        >
-          <Eye className="w-4 h-4" />
-          <span>View Dashboard</span>
-        </button>
-      )}
     </div>
   );
 }
