@@ -9,7 +9,8 @@ git clone <your-repo-url>
 npm install
 npm run dev
 ```
-
+## Live Demo
+### https://team-pulse-task.vercel.app/
 ## Technologies
 
 * React
