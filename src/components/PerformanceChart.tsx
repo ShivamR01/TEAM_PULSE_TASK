@@ -16,6 +16,7 @@ export default function PerformanceChart({ members }: PerformanceChartProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Prepare chart data
   const data = members.map(member => {
     const completed = member.tasks.filter(t => t.taskStatus === 'completed').length;
     const inProgress = member.tasks.filter(t => t.taskStatus === 'in-progress').length;
@@ -35,13 +36,23 @@ export default function PerformanceChart({ members }: PerformanceChartProps) {
     Pending: '#f59e0b',
   };
 
+  // Determine max Y-axis value
+  const maxValue = Math.max(
+    ...data.map(d => Math.max(d.Completed, d['In Progress'], d.Pending))
+  );
+
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4">
-      <h2 className="text-xl font-bold text-gray-900 mb-4">Member Performance</h2>
-      <ResponsiveContainer width="100%" height={450}>
+    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-3 sm:p-4">
+      <h2 className="text-xl font-bold text-gray-900 mb-3 sm:mb-4">Member Performance</h2>
+      <ResponsiveContainer width="100%" height={isSmallScreen ? 300 : 450}>
         <LineChart
           data={data}
-          margin={{ top: 20, right: 20, left: 10, bottom: 60 }}
+          margin={{
+            top: 20,
+            right: 10,
+            left: isSmallScreen ? 0 : 10, // reduced left padding on small screens
+            bottom: isSmallScreen ? 30 : 60,
+          }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
@@ -53,15 +64,21 @@ export default function PerformanceChart({ members }: PerformanceChartProps) {
             height={!isSmallScreen ? 80 : 20}
           />
           <YAxis
-            tick={{ fontSize: 14, fill: '#4b5563', fontWeight: 500 }}
+            tick={{ fontSize: isSmallScreen ? 10 : 14, fill: '#4b5563', fontWeight: 500 }}
             allowDecimals={false}
-            padding={{ top: 40, bottom: 10 }} // <-- This adds vertical space above/below lines
+            domain={[0, maxValue + 1]} // add space above max value
+            tickCount={isSmallScreen ? 3 : undefined} // fewer ticks on small screens
+            padding={{ top: 20, bottom: 10 }}
           />
           <Tooltip
             formatter={(value, name) => [value, name]}
             labelFormatter={(label) => `Member: ${label}`}
           />
-          <Legend verticalAlign="top" height={60} />
+          <Legend
+            verticalAlign="top"
+            height={isSmallScreen ? 50 : 60}
+            wrapperStyle={{ paddingBottom: isSmallScreen ? 10 : 0 }}
+          />
           {Object.keys(colors).map((key) => (
             <Line
               key={key}
@@ -69,8 +86,8 @@ export default function PerformanceChart({ members }: PerformanceChartProps) {
               dataKey={key}
               stroke={colors[key]}
               strokeWidth={3}
-              activeDot={{ r: 8 }}
-              dot={{ r: 5 }}
+              activeDot={{ r: isSmallScreen ? 5 : 8 }}
+              dot={{ r: isSmallScreen ? 3 : 5 }}
             />
           ))}
         </LineChart>
