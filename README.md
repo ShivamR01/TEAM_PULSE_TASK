@@ -1,1 +1,18 @@
-Team-Pulse
+# Team Pulse Dashboard
+
+Role-based dashboard for team management. Team leads can view members, assign tasks, and track progress. Team members can view their tasks and update status.
+
+## Installation
+
+```bash
+git clone <your-repo-url>
+npm install
+npm run dev
+```
+
+## Technologies
+
+* React
+* Redux
+* Tailwind CSS
+
