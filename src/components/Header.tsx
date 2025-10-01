@@ -26,26 +26,26 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <header className="bg-white shadow border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
 
         {/* Left: Logo */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-tr from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-md">
-            <User className="w-5 h-5 text-white" />
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-700 rounded-full flex items-center justify-center shadow-sm">
+            <User className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
           </div>
-          <span className="text-xl font-semibold text-gray-900 tracking-wide">Team Pulse</span>
+          <span className="text-lg sm:text-2xl font-semibold text-gray-900 tracking-wide">Team Pulse</span>
         </div>
 
         {/* Center: Role Toggle */}
-        <div className="relative w-52 h-10 bg-gray-100 rounded-full flex items-center p-1 shadow-inner cursor-pointer select-none">
+        <div className="relative w-44 sm:w-60 h-10 sm:h-12 bg-gray-100 rounded-full flex items-center p-1 shadow-inner cursor-pointer select-none">
           <div
-            className={`absolute top-0 left-0 h-full w-1/2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-transform duration-300`}
+            className={`absolute top-0 left-0 h-full w-1/2 bg-blue-600 rounded-full transition-transform duration-300`}
             style={{ transform: currentRole === 'lead' ? 'translateX(0%)' : 'translateX(100%)' }}
           />
           <button
             onClick={() => handleRoleToggle('lead')}
-            className={`relative z-10 w-1/2 h-full flex items-center justify-center text-sm font-medium transition-colors ${
+            className={`relative z-10 w-1/2 h-full flex items-center justify-center text-sm sm:text-base font-medium transition-colors ${
               currentRole === 'lead' ? 'text-white' : 'text-gray-700'
             }`}
           >
@@ -53,7 +53,7 @@ export default function Header() {
           </button>
           <button
             onClick={() => handleRoleToggle('member')}
-            className={`relative z-10 w-1/2 h-full flex items-center justify-center text-sm font-medium transition-colors ${
+            className={`relative z-10 w-1/2 h-full flex items-center justify-center text-sm sm:text-base font-medium transition-colors ${
               currentRole === 'member' ? 'text-white' : 'text-gray-700'
             }`}
           >
@@ -64,24 +64,24 @@ export default function Header() {
         {/* Right: Profile */}
         <div className="relative">
           <div
-            className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 rounded-full px-3 py-1 transition-all shadow-sm"
+            className="flex items-center gap-2 sm:gap-3 cursor-pointer hover:bg-gray-100 rounded-full px-3 sm:px-4 py-1 sm:py-2 transition-all shadow-sm"
             onClick={() => currentRole === 'member' && setDropdownOpen(!dropdownOpen)}
           >
-            <div className="bg-gradient-to-tr from-purple-400 to-pink-400 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
-              <User className="w-5 h-5 text-white" />
+            <div className="bg-gray-700 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-sm">
+              <User className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
             </div>
             <div className="hidden sm:flex flex-col">
-              <span className="text-sm font-semibold text-gray-900">{profileName}</span>
+              <span className="text-xs sm:text-sm font-semibold text-gray-900">{profileName}</span>
               {currentRole === 'member' && selectedMember && (
-                <span className="text-xs text-gray-500">ID: {selectedMember.id}</span>
+                <span className="text-[10px] sm:text-xs text-gray-500">ID: {selectedMember.id}</span>
               )}
             </div>
             {currentRole === 'member' && (
               <span>
                 {dropdownOpen ? (
-                  <ChevronUp className="w-4 h-4 text-gray-500" />
+                  <ChevronUp className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500" />
                 ) : (
-                  <ChevronDown className="w-4 h-4 text-gray-500" />
+                  <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500" />
                 )}
               </span>
             )}
@@ -94,12 +94,12 @@ export default function Header() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden"
+                className="absolute right-0 mt-2 w-44 sm:w-52 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden"
               >
                 {teamMembers.map(member => (
                   <div
                     key={member.id}
-                    className={`px-4 py-2 cursor-pointer hover:bg-blue-50 transition-all ${
+                    className={`px-3 py-2 sm:px-4 sm:py-2 cursor-pointer hover:bg-blue-50 transition-all ${
                       member.id === selectedMemberId ? 'bg-blue-100 font-medium' : ''
                     }`}
                     onClick={() => handleMemberSelect(member.id)}
