@@ -62,7 +62,7 @@ export default function TeamLeadView() {
       
     {/* Dashboard Heading */}
     <div className="flex items-center justify-between">
-      <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+      <h1 className="text-3xl md:text-4xl font-extrabold text-gray-600 tracking-tight">
         Team Lead Dashboard
       </h1>
     </div>
@@ -100,7 +100,7 @@ export default function TeamLeadView() {
 
       {/* Assign Task Form */}
       <div className="bg-white/20 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-5 flex items-center gap-2">
+        <h2 className="text-2xl font-semibold text-gray-900 mb-5 flex items-center gap-2">
           <Plus className="w-5 h-5" /> Assign New Task
         </h2>
         <form onSubmit={handleAssignTask} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
@@ -153,7 +153,7 @@ export default function TeamLeadView() {
       {/* Team Members Section */}
       <div className="bg-white/20 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 p-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 gap-3">
-          <h2 className="text-lg font-semibold text-gray-900">Team Members</h2>
+          <h2 className="text-2xl font-semibold text-gray-900">Team Members</h2>
           <div className="flex flex-wrap gap-3">
             <div className="flex items-center gap-2">
               <Filter className="w-4 h-4 text-gray-500" />

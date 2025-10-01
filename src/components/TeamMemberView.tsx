@@ -44,9 +44,9 @@ export default function TeamMemberView() {
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4"
       >
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 tracking-wide">
-          Team Member Dashboard
-        </h2>
+       <h1 className="text-3xl md:text-4xl font-extrabold text-gray-600 tracking-tight">
+        Team Member Dashboard
+      </h1>
 
         <select
           value={currentMember.id}

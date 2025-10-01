@@ -12,7 +12,7 @@ interface RoleState {
 }
 
 const initialState: RoleState = {
-  currentRole: 'member',
+  currentRole: 'lead',
   selectedMemberId: '1',
   teamMembers: [
   { id: '1', name: 'John Doe' },

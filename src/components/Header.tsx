@@ -41,16 +41,8 @@ export default function Header() {
         <div className="relative w-52 h-10 bg-gray-100 rounded-full flex items-center p-1 shadow-inner cursor-pointer select-none">
           <div
             className={`absolute top-0 left-0 h-full w-1/2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-transform duration-300`}
-            style={{ transform: currentRole === 'member' ? 'translateX(0%)' : 'translateX(100%)' }}
+            style={{ transform: currentRole === 'lead' ? 'translateX(0%)' : 'translateX(100%)' }}
           />
-          <button
-            onClick={() => handleRoleToggle('member')}
-            className={`relative z-10 w-1/2 h-full flex items-center justify-center text-sm font-medium transition-colors ${
-              currentRole === 'member' ? 'text-white' : 'text-gray-700'
-            }`}
-          >
-            Team Member
-          </button>
           <button
             onClick={() => handleRoleToggle('lead')}
             className={`relative z-10 w-1/2 h-full flex items-center justify-center text-sm font-medium transition-colors ${
@@ -58,6 +50,14 @@ export default function Header() {
             }`}
           >
             Team Lead
+          </button>
+          <button
+            onClick={() => handleRoleToggle('member')}
+            className={`relative z-10 w-1/2 h-full flex items-center justify-center text-sm font-medium transition-colors ${
+              currentRole === 'member' ? 'text-white' : 'text-gray-700'
+            }`}
+          >
+            Team Member
           </button>
         </div>
 
